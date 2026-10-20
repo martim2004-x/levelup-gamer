@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos | Level-Up Gamer</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <nav class="navbar contenedor" aria-label="Navegación principal">
+      <a href="index.html" class="navbar__logo">
+        <img src="img/general/logo.png" alt="Logo Level-Up Gamer">
+        <span>LEVEL-UP GAMER</span>
+      </a>
+      <button class="navbar__toggle" aria-label="Abrir menú de navegación" aria-expanded="false">☰</button>
+      <ul class="navbar__menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="productos.html" class="activo">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="login.html">Iniciar sesión</a></li>
+        <li><a href="registro.html">Registrarse</a></li>
+      </ul>
+      <div class="navbar__acciones">
+        <a href="carrito.html" class="navbar__carrito" aria-label="Ver carrito de compras">
+          🛒 Cart (<span class="badge-carrito">0</span>)
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main">
+    <div class="contenedor seccion">
+      <h1>Todos los productos</h1>
+
+      <!-- Barra lateral / de filtros: elemento de navegación pedido en el anexo 1 -->
+      <div class="campo" style="max-width: 320px;">
+        <label for="filtro-categoria">Filtrar por categoría</label>
+        <select id="filtro-categoria">
+          <option value="todas">Todas las categorías</option>
+          <!-- Las opciones de categoría se generan dinámicamente desde el arreglo de productos -->
+        </select>
+      </div>
+
+      <section aria-label="Listado de productos">
+        <div class="grid-productos" id="contenedor-productos">
+          <!-- Tarjetas insertadas por JS -->
+        </div>
+        <p id="mensaje-sin-resultados" class="texto-centro" hidden>
+          No hay productos en esta categoría por el momento.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="contenedor">
+      <div class="footer__grid">
+        <div>
+          <h4>Level-Up Gamer</h4>
+          <p>Tienda online dedicada a satisfacer las necesidades de los entusiastas de los videojuegos en Chile.</p>
+        </div>
+        <div>
+          <h4>Navegación</h4>
+          <a href="index.html">Home</a>
+          <a href="productos.html">Productos</a>
+          <a href="nosotros.html">Nosotros</a>
+          <a href="blogs.html">Blogs</a>
+        </div>
+        <div>
+          <h4>Mi cuenta</h4>
+          <a href="login.html">Iniciar sesión</a>
+          <a href="registro.html">Registrarse</a>
+          <a href="carrito.html">Mi carrito</a>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <a href="contacto.html">Formulario de contacto</a>
+          <a href="https://wa.me/56900000000" target="_blank" rel="noopener">Soporte por WhatsApp</a>
+        </div>
+      </div>
+      <p class="footer__bottom">&copy; 2026 Level-Up Gamer. Todos los derechos reservados. Proyecto académico DSY1104.</p>
+    </div>
+  </footer>
+
+  <script src="js/productos-data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    const contenedor = document.getElementById("contenedor-productos");
+    const mensajeSinResultados = document.getElementById("mensaje-sin-resultados");
+    const selectCategoria = document.getElementById("filtro-categoria");
+
+    // Construimos la lista de categorías únicas a partir del arreglo PRODUCTOS,
+    // en vez de escribirlas a mano, para que nunca queden desincronizadas.
+    function poblarCategorias() {
+      const categorias = [...new Set(PRODUCTOS.map((p) => p.categoria))];
+      categorias.forEach((categoria) => {
+        const opcion = document.createElement("option");
+        opcion.value = categoria;
+        opcion.textContent = categoria;
+        selectCategoria.appendChild(opcion);
+      });
+    }
+
+    function renderizarProductos(categoriaSeleccionada) {
+      contenedor.innerHTML = "";
+      const listaFiltrada =
+        categoriaSeleccionada === "todas"
+          ? PRODUCTOS
+          : PRODUCTOS.filter((p) => p.categoria === categoriaSeleccionada);
+
+      mensajeSinResultados.hidden = listaFiltrada.length > 0;
+
+      listaFiltrada.forEach((producto) => {
+        contenedor.appendChild(crearTarjetaProducto(producto));
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      poblarCategorias();
+      renderizarProductos("todas");
+
+      selectCategoria.addEventListener("change", (evento) => {
+        renderizarProductos(evento.target.value);
+      });
+    });
+  </script>
+</body>
+</html>

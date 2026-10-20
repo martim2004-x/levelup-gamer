@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blogs | Level-Up Gamer</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <nav class="navbar contenedor" aria-label="Navegación principal">
+      <a href="index.html" class="navbar__logo">
+        <img src="img/general/logo.png" alt="Logo Level-Up Gamer">
+        <span>LEVEL-UP GAMER</span>
+      </a>
+      <button class="navbar__toggle" aria-label="Abrir menú de navegación" aria-expanded="false">☰</button>
+      <ul class="navbar__menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blogs.html" class="activo">Blogs</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="login.html">Iniciar sesión</a></li>
+        <li><a href="registro.html">Registrarse</a></li>
+      </ul>
+      <div class="navbar__acciones">
+        <a href="carrito.html" class="navbar__carrito" aria-label="Ver carrito de compras">
+          🛒 Cart (<span class="badge-carrito">0</span>)
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main">
+    <div class="contenedor seccion">
+      <h1 class="texto-centro mb-3">Noticias importantes</h1>
+
+      <article class="tarjeta-contenido">
+        <div>
+          <h2>Caso Curioso #1: El primer torneo LAN de Chile</h2>
+          <p>
+            Descubre cómo nació la escena competitiva de videojuegos en Chile y qué relación
+            tiene con el programa de puntos LevelUp de nuestra tienda.
+          </p>
+          <a href="detalle-blog1.html" class="btn btn-secundario">Ver caso</a>
+        </div>
+        <img src="img/blog/blog1.svg" alt="Caso curioso 1: torneo LAN">
+      </article>
+
+      <article class="tarjeta-contenido">
+        <div>
+          <h2>Caso Curioso #2: Cómo elegir tu primera silla gamer</h2>
+          <p>
+            Una guía rápida con los factores clave (ergonomía, materiales, ajuste) para elegir
+            la silla gamer correcta según tu setup y presupuesto.
+          </p>
+          <a href="detalle-blog2.html" class="btn btn-secundario">Ver caso</a>
+        </div>
+        <img src="img/blog/blog2.svg" alt="Caso curioso 2: silla gamer">
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="contenedor">
+      <div class="footer__grid">
+        <div>
+          <h4>Level-Up Gamer</h4>
+          <p>Tienda online dedicada a satisfacer las necesidades de los entusiastas de los videojuegos en Chile.</p>
+        </div>
+        <div>
+          <h4>Navegación</h4>
+          <a href="index.html">Home</a>
+          <a href="productos.html">Productos</a>
+          <a href="nosotros.html">Nosotros</a>
+          <a href="blogs.html">Blogs</a>
+        </div>
+        <div>
+          <h4>Mi cuenta</h4>
+          <a href="login.html">Iniciar sesión</a>
+          <a href="registro.html">Registrarse</a>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <a href="contacto.html">Formulario de contacto</a>
+        </div>
+      </div>
+      <p class="footer__bottom">&copy; 2026 Level-Up Gamer. Todos los derechos reservados. Proyecto académico DSY1104.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

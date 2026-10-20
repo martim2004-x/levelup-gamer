@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="titulo-pagina">Detalle de producto | Level-Up Gamer</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Estilos específicos de esta vista (layout de dos columnas para el detalle).
+       Van aquí porque son exclusivos de esta página; el CSS externo global
+       sigue siendo el que da la identidad visual compartida. */
+    .detalle-producto {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      align-items: start;
+      margin-block: var(--space-3);
+    }
+    .detalle-producto__imagen img {
+      border-radius: var(--radio-borde);
+      border: 2px solid var(--color-acento-azul);
+    }
+    .detalle-producto__precio {
+      font-family: var(--fuente-titulos);
+      font-size: 2rem;
+      color: var(--color-acento-verde);
+      margin-block: var(--space-2);
+    }
+    .selector-cantidad {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-block: var(--space-3);
+    }
+    .selector-cantidad input {
+      width: 70px;
+      text-align: center;
+    }
+    @media (max-width: 900px) {
+      .detalle-producto { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <nav class="navbar contenedor" aria-label="Navegación principal">
+      <a href="index.html" class="navbar__logo">
+        <img src="img/general/logo.png" alt="Logo Level-Up Gamer">
+        <span>LEVEL-UP GAMER</span>
+      </a>
+      <button class="navbar__toggle" aria-label="Abrir menú de navegación" aria-expanded="false">☰</button>
+      <ul class="navbar__menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="productos.html" class="activo">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="login.html">Iniciar sesión</a></li>
+        <li><a href="registro.html">Registrarse</a></li>
+      </ul>
+      <div class="navbar__acciones">
+        <a href="carrito.html" class="navbar__carrito" aria-label="Ver carrito de compras">
+          🛒 Cart (<span class="badge-carrito">0</span>)
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main">
+    <div class="contenedor seccion">
+      <p class="migas">
+        <a href="index.html">Home</a> &gt; <a href="productos.html">Productos</a> &gt; <span id="miga-nombre">Producto</span>
+      </p>
+
+      <div id="contenido-detalle">
+        <!-- Se llena dinámicamente vía JS a partir del parámetro ?codigo= de la URL -->
+      </div>
+
+      <p id="mensaje-no-encontrado" hidden>
+        No encontramos ese producto. <a href="productos.html">Vuelve al catálogo</a>.
+      </p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="contenedor">
+      <div class="footer__grid">
+        <div>
+          <h4>Level-Up Gamer</h4>
+          <p>Tienda online dedicada a satisfacer las necesidades de los entusiastas de los videojuegos en Chile.</p>
+        </div>
+        <div>
+          <h4>Navegación</h4>
+          <a href="index.html">Home</a>
+          <a href="productos.html">Productos</a>
+          <a href="nosotros.html">Nosotros</a>
+          <a href="blogs.html">Blogs</a>
+        </div>
+        <div>
+          <h4>Mi cuenta</h4>
+          <a href="login.html">Iniciar sesión</a>
+          <a href="registro.html">Registrarse</a>
+          <a href="carrito.html">Mi carrito</a>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <a href="contacto.html">Formulario de contacto</a>
+          <a href="https://wa.me/56900000000" target="_blank" rel="noopener">Soporte por WhatsApp</a>
+        </div>
+      </div>
+      <p class="footer__bottom">&copy; 2026 Level-Up Gamer. Todos los derechos reservados. Proyecto académico DSY1104.</p>
+    </div>
+  </footer>
+
+  <script src="js/productos-data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Leemos el código de producto desde la URL, ej: detalle-producto.html?codigo=CO001
+      const parametros = new URLSearchParams(window.location.search);
+      const codigo = parametros.get("codigo");
+      const producto = buscarProductoPorCodigo(codigo);
+
+      const contenido = document.getElementById("contenido-detalle");
+      const mensajeNoEncontrado = document.getElementById("mensaje-no-encontrado");
+
+      if (!producto) {
+        contenido.hidden = true;
+        mensajeNoEncontrado.hidden = false;
+        return;
+      }
+
+      document.getElementById("titulo-pagina").textContent = `${producto.nombre} | Level-Up Gamer`;
+      document.getElementById("miga-nombre").textContent = producto.nombre;
+
+      const alertaStock =
+        producto.stock <= producto.stockCritico
+          ? `<p><span class="badge badge-alerta">¡Stock crítico! Quedan ${producto.stock} unidades</span></p>`
+          : `<p class="texto-acento-verde">Stock disponible: ${producto.stock} unidades</p>`;
+
+      contenido.innerHTML = `
+        <div class="detalle-producto">
+          <div class="detalle-producto__imagen">
+            <img src="${producto.imagen}" alt="${producto.nombre}">
+          </div>
+          <div class="detalle-producto__info">
+            <span class="tarjeta-producto__categoria">${producto.categoria}</span>
+            <h1>${producto.nombre}</h1>
+            <p class="detalle-producto__precio">${formatearCLP(producto.precio)}</p>
+            <p>${producto.descripcion}</p>
+            ${alertaStock}
+
+            <div class="selector-cantidad">
+              <label for="input-cantidad">Cantidad:</label>
+              <input type="number" id="input-cantidad" value="1" min="1" max="${producto.stock}">
+            </div>
+
+            <button type="button" class="btn btn-primario" id="btn-agregar-carrito">
+              Añadir al carrito
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("btn-agregar-carrito").addEventListener("click", () => {
+        const cantidad = parseInt(document.getElementById("input-cantidad").value, 10) || 1;
+        agregarAlCarrito(producto.codigo, cantidad);
+        mostrarAvisoCarrito(producto.nombre);
+      });
+    });
+  </script>
+</body>
+</html>

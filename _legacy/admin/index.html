@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Administrador | Level-Up Gamer</title>
+  <link rel="icon" href="../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <!-- ============ MENÚ LATERAL VERTICAL ============ -->
+    <!-- El anexo pide "menú vertical" y "diseño libre, pero debe tener un
+         menú visible": este <aside><nav> cumple ambos, y se REPITE igual
+         (mismos enlaces) en todas las vistas de admin para dar consistencia. -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__marca">
+        <img src="../img/general/logo.png" alt="Logo Level-Up Gamer">
+        <span>Admin Panel</span>
+      </div>
+      <nav aria-label="Navegación del administrador">
+        <ul class="admin-menu">
+          <li><a href="index.html" class="activo">🏠 Dashboard</a></li>
+          <li><a href="productos.html">📦 Productos</a></li>
+          <li><a href="usuarios.html">👤 Usuarios</a></li>
+        </ul>
+      </nav>
+      <div class="admin-sidebar__pie">
+        <a href="../index.html">← Volver a la tienda</a>
+      </div>
+    </aside>
+
+    <!-- ============ CONTENIDO PRINCIPAL ============ -->
+    <div class="admin-contenido">
+      <header class="admin-topbar">
+        <h1>¡Hola, Administrador!</h1>
+      </header>
+
+      <main class="admin-main">
+        <section class="admin-cards-resumen" id="resumen-metricas">
+          <!-- Tarjetas de métricas generadas por JS a partir de PRODUCTOS -->
+        </section>
+
+        <section class="admin-panel">
+          <h2>Productos con stock crítico</h2>
+          <table class="admin-tabla" id="tabla-stock-critico">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Stock actual</th>
+                <th>Stock crítico</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Filas generadas vía JS -->
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/productos-data.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const totalProductos = PRODUCTOS.length;
+      const totalStock = PRODUCTOS.reduce((suma, p) => suma + p.stock, 0);
+      const valorInventario = PRODUCTOS.reduce((suma, p) => suma + p.stock * p.precio, 0);
+      const criticos = PRODUCTOS.filter((p) => p.stock <= p.stockCritico);
+
+      document.getElementById("resumen-metricas").innerHTML = `
+        <div class="admin-card">
+          <span class="admin-card__valor">${totalProductos}</span>
+          <span class="admin-card__etiqueta">Productos</span>
+        </div>
+        <div class="admin-card">
+          <span class="admin-card__valor">${totalStock}</span>
+          <span class="admin-card__etiqueta">Unidades en stock</span>
+        </div>
+        <div class="admin-card">
+          <span class="admin-card__valor">${formatearCLP(valorInventario)}</span>
+          <span class="admin-card__etiqueta">Valor del inventario</span>
+        </div>
+        <div class="admin-card admin-card--alerta">
+          <span class="admin-card__valor">${criticos.length}</span>
+          <span class="admin-card__etiqueta">Con stock crítico</span>
+        </div>
+      `;
+
+      const tbody = document.querySelector("#tabla-stock-critico tbody");
+      if (criticos.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4">No hay productos con stock crítico. ✅</td></tr>`;
+      } else {
+        criticos.forEach((p) => {
+          const fila = document.createElement("tr");
+          fila.innerHTML = `
+            <td>${p.codigo}</td>
+            <td>${p.nombre}</td>
+            <td>${p.stock}</td>
+            <td>${p.stockCritico}</td>
+          `;
+          tbody.appendChild(fila);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

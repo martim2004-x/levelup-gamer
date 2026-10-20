@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="titulo-pagina">Nuevo usuario | Admin Level-Up Gamer</title>
+  <link rel="icon" href="../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__marca">
+        <img src="../img/general/logo.png" alt="Logo Level-Up Gamer">
+        <span>Admin Panel</span>
+      </div>
+      <nav aria-label="Navegación del administrador">
+        <ul class="admin-menu">
+          <li><a href="index.html">🏠 Dashboard</a></li>
+          <li><a href="productos.html">📦 Productos</a></li>
+          <li><a href="usuarios.html" class="activo">👤 Usuarios</a></li>
+        </ul>
+      </nav>
+      <div class="admin-sidebar__pie">
+        <a href="../index.html">← Volver a la tienda</a>
+      </div>
+    </aside>
+
+    <div class="admin-contenido">
+      <header class="admin-topbar">
+        <h1 id="titulo-formulario">Nuevo usuario</h1>
+      </header>
+
+      <main class="admin-main">
+        <form class="formulario" id="form-usuario" novalidate style="max-width:600px;">
+          <h2 class="formulario__titulo" id="subtitulo-formulario">Registro de usuario</h2>
+
+          <div class="campo">
+            <label for="run-usuario">RUN (sin puntos ni guión)</label>
+            <input type="text" id="run-usuario" name="run" placeholder="19011022K" maxlength="9" required>
+            <span class="campo__mensaje"></span>
+          </div>
+
+          <div class="campo-doble">
+            <div class="campo">
+              <label for="nombre-usuario">Nombre</label>
+              <input type="text" id="nombre-usuario" name="nombre" maxlength="50" required>
+              <span class="campo__mensaje"></span>
+            </div>
+            <div class="campo">
+              <label for="apellidos-usuario">Apellidos</label>
+              <input type="text" id="apellidos-usuario" name="apellidos" maxlength="100" required>
+              <span class="campo__mensaje"></span>
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="correo-usuario">Correo</label>
+            <input type="email" id="correo-usuario" name="correo" maxlength="100" placeholder="nombre@duoc.cl" required>
+            <span class="campo__mensaje"></span>
+          </div>
+
+          <div class="campo">
+            <label for="fecha-nacimiento-usuario">Fecha de nacimiento (opcional)</label>
+            <input type="date" id="fecha-nacimiento-usuario" name="fechaNacimiento">
+            <span class="campo__mensaje"></span>
+          </div>
+
+          <!-- Este campo es EXCLUSIVO de la vista administrativa, tal como
+               indica el anexo: "implementar solo para la vista administrativa
+               y ver roles asociados al sistema". No aparece en registro.html. -->
+          <div class="campo">
+            <label for="tipo-usuario">Tipo de usuario</label>
+            <select id="tipo-usuario" name="tipoUsuario" required>
+              <option value="" disabled selected>-- Seleccione el perfil --</option>
+              <option>Administrador</option>
+              <option>Vendedor</option>
+              <option>Cliente</option>
+            </select>
+            <span class="campo__ayuda">Administrador: acceso total. Vendedor: solo productos y órdenes. Cliente: solo tienda.</span>
+            <span class="campo__mensaje"></span>
+          </div>
+
+          <div class="campo-doble">
+            <div class="campo">
+              <label for="region-usuario">Región</label>
+              <select id="region-usuario" name="region" required>
+                <option value="" disabled selected>-- Seleccione la región --</option>
+              </select>
+              <span class="campo__mensaje"></span>
+            </div>
+            <div class="campo">
+              <label for="comuna-usuario">Comuna</label>
+              <select id="comuna-usuario" name="comuna" disabled required>
+                <option value="" disabled selected>-- Seleccione la comuna --</option>
+              </select>
+              <span class="campo__mensaje"></span>
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="direccion-usuario">Dirección</label>
+            <input type="text" id="direccion-usuario" name="direccion" maxlength="300" required>
+            <span class="campo__mensaje"></span>
+          </div>
+
+          <p id="mensaje-general-usuario" class="campo__mensaje" role="alert"></p>
+
+          <button type="submit" class="btn btn-primario btn-bloque">Guardar usuario</button>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/usuarios-data.js"></script>
+  <script src="../js/regiones.js"></script>
+  <script src="../js/validaciones.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("form-usuario");
+      const run = document.getElementById("run-usuario");
+      const nombre = document.getElementById("nombre-usuario");
+      const apellidos = document.getElementById("apellidos-usuario");
+      const correo = document.getElementById("correo-usuario");
+      const fechaNacimiento = document.getElementById("fecha-nacimiento-usuario");
+      const tipoUsuario = document.getElementById("tipo-usuario");
+      const region = document.getElementById("region-usuario");
+      const comuna = document.getElementById("comuna-usuario");
+      const direccion = document.getElementById("direccion-usuario");
+      const mensajeGeneral = document.getElementById("mensaje-general-usuario");
+
+      poblarSelectRegiones(region);
+      region.addEventListener("change", () => actualizarComunas(region, comuna));
+
+      // --- Modo edición ---
+      const parametros = new URLSearchParams(window.location.search);
+      const runEdicion = parametros.get("run");
+      const usuarioExistente = runEdicion ? buscarUsuarioPorRun(runEdicion) : null;
+
+      if (usuarioExistente) {
+        document.getElementById("titulo-pagina").textContent = "Editar usuario | Admin Level-Up Gamer";
+        document.getElementById("titulo-formulario").textContent = "Editar usuario";
+        document.getElementById("subtitulo-formulario").textContent = "Editar usuario";
+
+        run.value = usuarioExistente.run;
+        run.readOnly = true;
+        nombre.value = usuarioExistente.nombre;
+        apellidos.value = usuarioExistente.apellidos;
+        correo.value = usuarioExistente.correo;
+        tipoUsuario.value = usuarioExistente.tipoUsuario;
+
+        const indiceRegion = REGIONES.findIndex((r) => r.nombre === usuarioExistente.region);
+        if (indiceRegion !== -1) {
+          region.value = indiceRegion;
+          actualizarComunas(region, comuna);
+          comuna.value = usuarioExistente.comuna;
+        }
+      }
+
+      // --- Validaciones en tiempo real ---
+      validarEnTiempoReal(run, validarRun);
+      validarEnTiempoReal(nombre, (v) => validarRequerido(v) || validarLargoMaximo(v, 50));
+      validarEnTiempoReal(apellidos, (v) => validarRequerido(v) || validarLargoMaximo(v, 100));
+      validarEnTiempoReal(correo, (v) => validarRequerido(v) || validarLargoMaximo(v, 100) || validarCorreoInstitucional(v));
+      validarEnTiempoReal(direccion, (v) => validarRequerido(v) || validarLargoMaximo(v, 300));
+
+      form.addEventListener("submit", (evento) => {
+        evento.preventDefault();
+
+        const validaciones = [
+          validarCampo(run, validarRun),
+          validarCampo(nombre, (v) => validarRequerido(v) || validarLargoMaximo(v, 50)),
+          validarCampo(apellidos, (v) => validarRequerido(v) || validarLargoMaximo(v, 100)),
+          validarCampo(correo, (v) => validarRequerido(v) || validarLargoMaximo(v, 100) || validarCorreoInstitucional(v)),
+          validarCampo(direccion, (v) => validarRequerido(v) || validarLargoMaximo(v, 300)),
+        ];
+
+        [
+          [tipoUsuario, "Selecciona un tipo de usuario."],
+          [region, "Selecciona una región."],
+          [comuna, "Selecciona una comuna."],
+        ].forEach(([campo, mensaje]) => {
+          if (campo.value === "") {
+            mostrarError(campo, mensaje);
+            validaciones.push(false);
+          } else {
+            mostrarExito(campo);
+          }
+        });
+
+        if (!validaciones.every(Boolean)) {
+          mensajeGeneral.textContent = "Revisa los campos marcados en rojo.";
+          mensajeGeneral.className = "campo__mensaje campo__mensaje--error";
+          return;
+        }
+
+        mensajeGeneral.textContent = usuarioExistente
+          ? "Usuario actualizado correctamente (simulado)."
+          : "Usuario creado correctamente (simulado).";
+        mensajeGeneral.className = "campo__mensaje campo__mensaje--ok";
+
+        setTimeout(() => (window.location.href = "usuarios.html"), 1200);
+      });
+    });
+  </script>
+</body>
+</html>

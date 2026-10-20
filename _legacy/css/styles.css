@@ -1,0 +1,627 @@
+/* ============================================================
+   LEVEL-UP GAMER — Hoja de estilos global
+   ------------------------------------------------------------
+   Esta es la ÚNICA hoja de estilos del sitio. Se enlaza de forma
+   externa en cada página (<link rel="stylesheet" href="css/styles.css">)
+   para que un solo archivo controle la apariencia de TODO el sitio
+   (requisito: "diseño consistente en todas las páginas").
+
+   Estructura de este archivo (léelo en este orden, igual que se
+   explica en el chat):
+   1. Variables de tema (:root)
+   2. Reset básico
+   3. Tipografía
+   4. Layout general (header, footer, contenedores)
+   5. Componentes (botones, tarjetas, formularios, badges)
+   6. Utilidades
+   7. Media queries (responsivo)
+   ============================================================ */
+
+/* -------------------- 1. VARIABLES DE TEMA -------------------- */
+/* Definimos toda la paleta y tipografía UNA vez aquí. El resto del
+   archivo solo hace referencia a estas variables con var(--nombre).
+   Ventaja pedagógica: si el docente pide cambiar el acento verde por
+   otro color, se cambia UNA línea y afecta a todo el sitio. */
+:root {
+  /* Colores de fondo */
+  --color-bg: #000000;             /* Fondo principal, según Forma B */
+  --color-bg-elevado: #121212;     /* Tarjetas, header, secciones sobre el fondo */
+  --color-bg-elevado-2: #1a1a1a;   /* Un nivel más claro (inputs, hover) */
+
+  /* Colores de acento (Forma B: Azul Eléctrico y Verde Neón) */
+  --color-acento-azul: #1E90FF;
+  --color-acento-verde: #39FF14;
+
+  /* Colores de texto */
+  --color-texto: #FFFFFF;
+  --color-texto-secundario: #D3D3D3;
+  --color-texto-tenue: #8a8a8a;
+
+  /* Estados semánticos */
+  --color-error: #ff4d4d;
+  --color-exito: #39FF14;
+  --color-advertencia: #ffb020;
+
+  /* Tipografía (Forma B: Orbitron para títulos, Roboto para texto).
+     Si Google Fonts no carga (sin internet), el navegador cae a las
+     fuentes de respaldo: 'Arial Narrow'/sans-serif imitan el estilo
+     condensado y futurista de Orbitron; Arial/Helvetica son casi
+     indistinguibles de Roboto para texto de cuerpo. */
+  --fuente-titulos: 'Orbitron', 'Arial Narrow', sans-serif;
+  --fuente-texto: 'Roboto', Arial, Helvetica, sans-serif;
+
+  /* Espaciados reutilizables (escala de 8px) */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+
+  /* Bordes y sombras */
+  --radio-borde: 10px;
+  --sombra-tarjeta: 0 4px 14px rgba(0, 0, 0, 0.6);
+  --sombra-neon-azul: 0 0 12px rgba(30, 144, 255, 0.55);
+  --sombra-neon-verde: 0 0 12px rgba(57, 255, 20, 0.55);
+
+  /* Ancho máximo de contenido, para que en pantallas grandes no se estire todo */
+  --ancho-maximo: 1200px;
+}
+
+/* -------------------- 2. RESET BÁSICO -------------------- */
+/* Los navegadores traen márgenes/tamaños por defecto distintos entre
+   sí. Este reset nivela el terreno para que el diseño se vea igual
+   en todos los navegadores. */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* el padding y el borde se descuentan del ancho, no se suman */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* header, main y footer apilados; el footer se explica más abajo */
+}
+
+img {
+  max-width: 100%;
+  display: block; /* elimina el espacio fantasma bajo las imágenes inline */
+}
+
+a {
+  color: var(--color-acento-azul);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--color-acento-verde);
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+}
+
+/* Accesibilidad: un foco visible al navegar con teclado (Tab) */
+:focus-visible {
+  outline: 2px solid var(--color-acento-verde);
+  outline-offset: 2px;
+}
+
+/* -------------------- 3. TIPOGRAFÍA -------------------- */
+h1, h2, h3, h4 {
+  font-family: var(--fuente-titulos);
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+}
+
+h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: var(--space-3); }
+h3 { font-size: 1.2rem; margin-bottom: var(--space-1); }
+
+p { color: var(--color-texto-secundario); }
+
+.texto-acento-verde { color: var(--color-acento-verde); }
+.texto-acento-azul { color: var(--color-acento-azul); }
+
+/* -------------------- 4. LAYOUT GENERAL -------------------- */
+
+/* Contenedor centrado reutilizable en toda página */
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-maximo);
+  margin-inline: auto;
+  padding-inline: var(--space-3);
+}
+
+/* ---- Header / Navbar ---- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-bg-elevado);
+  border-bottom: 2px solid var(--color-acento-azul);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+}
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--fuente-titulos);
+  font-size: 1.1rem;
+  color: var(--color-texto);
+}
+
+.navbar__logo img {
+  height: 44px;
+  width: auto;
+}
+
+.navbar__menu {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.navbar__menu a {
+  color: var(--color-texto);
+  font-weight: 500;
+}
+
+.navbar__menu a.activo {
+  color: var(--color-acento-verde);
+  border-bottom: 2px solid var(--color-acento-verde);
+}
+
+.navbar__acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.navbar__carrito {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--color-texto);
+  font-weight: 600;
+}
+
+.navbar__carrito .badge-carrito {
+  background-color: var(--color-acento-verde);
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+}
+
+/* Botón hamburguesa, oculto en escritorio, visible en móvil (ver media query) */
+.navbar__toggle {
+  display: none;
+  background: transparent;
+  color: var(--color-texto);
+  font-size: 1.6rem;
+}
+
+/* ---- Footer ---- */
+.footer {
+  margin-top: auto; /* junto con body:flex, empuja el footer al fondo aunque haya poco contenido */
+  background-color: var(--color-bg-elevado);
+  border-top: 2px solid var(--color-acento-verde);
+  padding-block: var(--space-4);
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.footer__grid h4 {
+  color: var(--color-acento-verde);
+  margin-bottom: var(--space-2);
+}
+
+.footer__grid a {
+  display: block;
+  color: var(--color-texto-secundario);
+  margin-bottom: 0.4rem;
+}
+
+.footer__bottom {
+  text-align: center;
+  color: var(--color-texto-tenue);
+  margin-top: var(--space-4);
+  font-size: 0.85rem;
+}
+
+/* -------------------- 5. COMPONENTES -------------------- */
+
+/* ---- Botones ---- */
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.6rem;
+  border-radius: var(--radio-borde);
+  font-weight: 700;
+  font-family: var(--fuente-texto);
+  text-align: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primario {
+  background-color: var(--color-acento-azul);
+  color: #ffffff;
+}
+.btn-primario:hover {
+  box-shadow: var(--sombra-neon-azul);
+  color: #ffffff;
+}
+
+.btn-secundario {
+  background-color: transparent;
+  color: var(--color-acento-verde);
+  border: 2px solid var(--color-acento-verde);
+}
+.btn-secundario:hover {
+  box-shadow: var(--sombra-neon-verde);
+  color: var(--color-acento-verde);
+}
+
+.btn-bloque {
+  display: block;
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ---- Hero (sección principal del Home) ---- */
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-4);
+  align-items: center;
+  background-color: var(--color-bg-elevado);
+  border-radius: var(--radio-borde);
+  padding: var(--space-4);
+  margin-block: var(--space-4);
+}
+
+.hero__texto h1 {
+  margin-bottom: var(--space-2);
+}
+
+.hero__texto p {
+  margin-bottom: var(--space-3);
+}
+
+.hero__imagen img {
+  border-radius: var(--radio-borde);
+  border: 2px solid var(--color-acento-azul);
+}
+
+/* ---- Tarjeta de producto ---- */
+.grid-productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-3);
+  margin-block: var(--space-3);
+}
+
+.tarjeta-producto {
+  background-color: var(--color-bg-elevado);
+  border: 1px solid #262626;
+  border-radius: var(--radio-borde);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--sombra-tarjeta);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.tarjeta-producto:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-acento-azul);
+}
+
+.tarjeta-producto__imagen {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: #0a0a0a;
+}
+
+.tarjeta-producto__imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tarjeta-producto__cuerpo {
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.tarjeta-producto__categoria {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-acento-verde);
+}
+
+.tarjeta-producto__nombre {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.tarjeta-producto__precio {
+  font-family: var(--fuente-titulos);
+  font-size: 1.1rem;
+  color: var(--color-acento-azul);
+  margin-top: auto;
+}
+
+.tarjeta-producto__acciones {
+  padding: 0 var(--space-2) var(--space-2);
+}
+
+/* ---- Badges (descuento, stock crítico, etc.) ---- */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-descuento {
+  background-color: var(--color-acento-verde);
+  color: #000;
+}
+
+.badge-alerta {
+  background-color: var(--color-error);
+  color: #fff;
+}
+
+/* ---- Formularios ---- */
+.formulario {
+  background-color: var(--color-bg-elevado);
+  border-radius: var(--radio-borde);
+  padding: var(--space-4);
+  max-width: 500px;
+  margin-inline: auto;
+}
+
+.formulario__titulo {
+  background-color: var(--color-acento-azul);
+  color: #fff;
+  padding: var(--space-2);
+  margin: calc(var(--space-4) * -1) calc(var(--space-4) * -1) var(--space-3);
+  border-radius: var(--radio-borde) var(--radio-borde) 0 0;
+  font-family: var(--fuente-titulos);
+  text-align: center;
+}
+
+.campo {
+  margin-bottom: var(--space-3);
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-texto-secundario);
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  background-color: var(--color-bg-elevado-2);
+  border: 1.5px solid #333;
+  border-radius: 6px;
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  border-color: var(--color-acento-azul);
+  outline: none;
+}
+
+/* Estado de error en un campo: se activa agregando la clase .campo--error vía JS */
+.campo--error input,
+.campo--error select,
+.campo--error textarea {
+  border-color: var(--color-error);
+}
+
+.campo__mensaje {
+  display: block;
+  min-height: 1.2em;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.campo__mensaje--error {
+  color: var(--color-error);
+}
+
+.campo__mensaje--ok {
+  color: var(--color-exito);
+}
+
+.campo__ayuda {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--color-texto-tenue);
+  margin-top: 0.25rem;
+}
+
+.campo-doble {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+/* ---- Tarjetas de contenido genéricas (blog, nosotros) ---- */
+.tarjeta-contenido {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  align-items: center;
+  background-color: var(--color-bg-elevado);
+  border-radius: var(--radio-borde);
+  padding: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.tarjeta-contenido img {
+  border-radius: var(--radio-borde);
+}
+
+/* -------------------- 6. UTILIDADES -------------------- */
+.main {
+  flex: 1; /* empuja el footer hacia abajo cuando hay poco contenido */
+}
+
+.seccion {
+  padding-block: var(--space-4);
+}
+
+.texto-centro { text-align: center; }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+
+.migas {
+  font-size: 0.85rem;
+  color: var(--color-texto-tenue);
+  margin-bottom: var(--space-3);
+}
+
+.migas a { color: var(--color-texto-tenue); }
+.migas a:hover { color: var(--color-acento-verde); }
+
+/* ---- Toast (aviso flotante al añadir al carrito) ---- */
+.toast-carrito {
+  position: fixed;
+  bottom: var(--space-3);
+  right: var(--space-3);
+  background-color: var(--color-acento-verde);
+  color: #000;
+  font-weight: 700;
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radio-borde);
+  box-shadow: var(--sombra-tarjeta);
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  z-index: 200;
+}
+
+.toast-carrito.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* -------------------- 7. RESPONSIVO -------------------- */
+/* Mobile-first invertido: definimos el diseño de escritorio arriba y
+   aquí "recortamos" para pantallas chicas. Es una técnica válida y
+   común cuando el sitio es mayormente informativo/tienda. */
+
+@media (max-width: 900px) {
+  .hero,
+  .tarjeta-contenido {
+    grid-template-columns: 1fr;
+  }
+
+  .campo-doble {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar__toggle {
+    display: block;
+  }
+
+  .navbar__menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--color-bg-elevado);
+    padding: var(--space-2);
+    border-bottom: 2px solid var(--color-acento-azul);
+  }
+
+  .navbar__menu.abierto {
+    display: flex;
+  }
+
+  .navbar {
+    position: relative;
+    flex-wrap: wrap;
+  }
+
+  .grid-productos {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .formulario {
+    padding: var(--space-3);
+  }
+  .formulario__titulo {
+    margin: calc(var(--space-3) * -1) calc(var(--space-3) * -1) var(--space-3);
+  }
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
+  <rect width="500" height="500" fill="#1a1a1a" stroke="#39FF14" stroke-width="4"/>
+  <line x1="0" y1="0" x2="500" y2="500" stroke="#39FF14" stroke-width="2" opacity="0.5"/>
+  <line x1="500" y1="0" x2="0" y2="500" stroke="#39FF14" stroke-width="2" opacity="0.5"/>
+  <rect x="20" y="430" width="460" height="50" fill="#000000" opacity="0.75"/>
+  <text x="250.0" y="462" font-family="Arial, sans-serif" font-size="20" fill="#FFFFFF" text-anchor="middle" font-weight="bold">PlayStation 5</text>
+</svg>

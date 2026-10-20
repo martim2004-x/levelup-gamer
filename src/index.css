@@ -1,0 +1,549 @@
+/* ============================================================================
+   src/index.css
+   Tema visual de Level-Up Gamer sobre Bootstrap 5 (modo oscuro).
+   Conserva la identidad del sitio original (fondo negro, acentos azules y
+   tipografia Orbitron) pero ahora todo el layout usa la grilla de Bootstrap.
+   ============================================================================ */
+
+:root {
+  --lvl-bg: #0a0101;
+  --lvl-bg-elevado: #0d0d0f;
+  --lvl-bg-elevado-2: #1a1a1a;
+  --lvl-acento: #1e90ff;
+  --lvl-texto-tenue: #8a8a8a;
+  --lvl-error: #f11414;
+  --lvl-advertencia: #ffb020;
+  --lvl-fuente-titulos: 'Orbitron', 'Arial Narrow', sans-serif;
+}
+
+body {
+  background-color: var(--lvl-bg);
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+.display-5,
+.display-6,
+.marca-texto {
+  font-family: var(--lvl-fuente-titulos);
+  letter-spacing: 0.02em;
+}
+
+a {
+  color: var(--lvl-acento);
+}
+
+a:hover,
+a:focus-visible {
+  color: #6fb7ff;
+}
+
+.texto-acento {
+  color: var(--lvl-acento);
+}
+
+/* ------------------------------------------------------------------ botones */
+.btn {
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+.btn-marca {
+  background-color: var(--lvl-acento);
+  border-color: var(--lvl-acento);
+  color: #fff;
+}
+
+.btn-marca:hover,
+.btn-marca:focus {
+  background-color: #1877d4;
+  border-color: #1877d4;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(30, 144, 255, 0.55);
+}
+
+.btn-marca-outline {
+  background-color: transparent;
+  border: 2px solid var(--lvl-acento);
+  color: var(--lvl-acento);
+}
+
+.btn-marca-outline:hover,
+.btn-marca-outline:focus {
+  background-color: var(--lvl-acento);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(30, 144, 255, 0.55);
+}
+
+.btn-peligro {
+  background-color: var(--lvl-error);
+  border-color: var(--lvl-error);
+  color: #fff;
+}
+
+.btn-peligro:hover,
+.btn-peligro:focus {
+  background-color: #c70f0f;
+  border-color: #c70f0f;
+  color: #fff;
+}
+
+/* ------------------------------------------------------------------ navbar */
+.navbar-nivelup {
+  background-color: #000;
+  border-bottom: 2px solid var(--lvl-acento);
+}
+
+.navbar-nivelup .navbar-brand,
+.navbar-nivelup .nav-link {
+  color: #fff;
+}
+
+.navbar-nivelup .nav-link.activo,
+.navbar-nivelup .nav-link.active {
+  color: var(--lvl-acento);
+}
+
+.marca-texto {
+  font-size: 1.05rem;
+}
+
+/* ------------------------------------------------------------------ footer */
+.footer-nivelup {
+  background-color: #000;
+  border-top: 2px solid var(--lvl-acento);
+}
+
+.footer-nivelup h4 {
+  color: var(--lvl-acento);
+}
+
+.footer-nivelup a {
+  color: #cfcfcf;
+  text-decoration: none;
+}
+
+.footer-nivelup a:hover {
+  color: var(--lvl-acento);
+}
+
+/* -------------------------------------------------------------- home / hero */
+.hero-nivelup {
+  background-color: var(--lvl-bg-elevado);
+  border: 1px solid #262626;
+}
+
+.hero-nivelup__imagen {
+  max-height: 320px;
+}
+
+/* --------------------------------------------------------- tarjeta producto */
+.producto-card {
+  background-color: var(--lvl-bg-elevado);
+  border: 1px solid #262626;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.producto-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--lvl-acento);
+}
+
+.producto-card__imagen {
+  display: block;
+  aspect-ratio: 1 / 1;
+  background-color: #0a0a0a;
+  overflow: hidden;
+}
+
+.producto-card__imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.producto-card__categoria {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--lvl-acento);
+}
+
+.producto-card__nombre a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.producto-card__nombre a:hover {
+  color: var(--lvl-acento);
+}
+
+.producto-card__precio {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.producto-card__precio-original {
+  color: var(--lvl-texto-tenue);
+  text-decoration: line-through;
+  font-size: 0.9rem;
+}
+
+.producto-card__precio-final {
+  font-family: var(--lvl-fuente-titulos);
+  font-size: 1.15rem;
+  color: var(--lvl-acento);
+}
+
+/* --------------------------------------------------------- filtros catalogo */
+.panel-filtros {
+  background-color: var(--lvl-bg-elevado);
+  border: 1px solid #262626;
+}
+
+.migas {
+  font-size: 0.85rem;
+  color: var(--lvl-texto-tenue);
+}
+
+.migas a {
+  color: var(--lvl-texto-tenue);
+  text-decoration: none;
+}
+
+.migas a:hover {
+  color: var(--lvl-acento);
+}
+
+/* ----------------------------------------------------------------- detalle */
+.detalle-imagen {
+  border-radius: 12px;
+  border: 2px solid var(--lvl-acento);
+}
+
+.detalle-precio {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--lvl-fuente-titulos);
+  font-size: 2rem;
+  color: var(--lvl-acento);
+}
+
+/* ----------------------------------------------------------------- carrito */
+.item-carrito {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background-color: var(--lvl-bg-elevado);
+  border: 1px solid #262626;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.item-carrito__imagen {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item-carrito__cantidad {
+  width: 80px;
+  text-align: center;
+}
+
+.item-carrito__subtotal {
+  font-family: var(--lvl-fuente-titulos);
+  color: var(--lvl-acento);
+  min-width: 90px;
+  text-align: right;
+}
+
+.resumen-carrito {
+  background-color: var(--lvl-bg-elevado);
+  border: 1px solid #262626;
+}
+
+.resumen-carrito__total {
+  font-family: var(--lvl-fuente-titulos);
+  font-size: 1.3rem;
+  color: var(--lvl-acento);
+}
+
+/* -------------------------------------------------------------- formularios */
+.formulario-nivelup {
+  background-color: var(--lvl-bg-elevado);
+  border: 1px solid #262626;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #e6e6e6;
+}
+
+.form-control,
+.form-select {
+  background-color: var(--lvl-bg-elevado-2);
+  border-color: #333;
+  color: #fff;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--lvl-bg-elevado-2);
+  color: #fff;
+  border-color: var(--lvl-acento);
+  box-shadow: 0 0 0 0.2rem rgba(30, 144, 255, 0.25);
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+  border-color: var(--lvl-error);
+}
+
+/* ------------------------------------------------------------------- toast */
+.toast-nivelup {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1080;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--lvl-acento);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.toast-nivelup__cerrar {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+}
+
+/* ------------------------------------------------------- compra exitosa/err */
+.compra-resultado {
+  background-color: var(--lvl-bg-elevado);
+  border: 1px solid #262626;
+  border-radius: 12px;
+  padding: 2.5rem 1.5rem;
+}
+
+.compra-resultado__icono {
+  width: 84px;
+  height: 84px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.compra-resultado__icono.es-exito {
+  background-color: #1aa76a;
+}
+
+.compra-resultado__icono.es-error {
+  background-color: var(--lvl-error);
+}
+
+/* ---------------------------------------------------------------- contenido */
+.articulo-blog {
+  max-width: 760px;
+}
+
+.articulo-blog ul {
+  padding-left: 1.4rem;
+}
+
+/* ====================================================== panel administrador */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+  background-color: var(--lvl-bg);
+}
+
+.admin-sidebar {
+  background-color: var(--lvl-bg-elevado);
+  border-right: 2px solid var(--lvl-acento);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.admin-sidebar__marca {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  font-family: var(--lvl-fuente-titulos);
+  font-size: 0.95rem;
+}
+
+.admin-sidebar__marca img {
+  height: 36px;
+}
+
+.admin-menu__enlace {
+  display: block;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  color: #cfcfcf;
+  font-weight: 500;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+}
+
+.admin-menu__enlace:hover {
+  background-color: var(--lvl-bg-elevado-2);
+  color: #fff;
+}
+
+.admin-menu__enlace.activo,
+.admin-menu__enlace.active {
+  background-color: var(--lvl-acento);
+  color: #fff;
+}
+
+.admin-sidebar__pie {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid #262626;
+  font-size: 0.85rem;
+}
+
+.admin-contenido {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-topbar {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #262626;
+  background-color: var(--lvl-bg-elevado);
+}
+
+.admin-main {
+  padding: 2rem;
+  flex: 1;
+}
+
+.admin-panel {
+  background-color: var(--lvl-bg-elevado);
+  border: 1px solid #262626;
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.admin-card {
+  background-color: var(--lvl-bg-elevado);
+  border-radius: 10px;
+  border: 1px solid #262626;
+  border-left: 4px solid var(--lvl-acento);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.admin-card--alerta {
+  border-left-color: var(--lvl-error);
+}
+
+.admin-card__valor {
+  font-family: var(--lvl-fuente-titulos);
+  font-size: 1.8rem;
+}
+
+.admin-card__etiqueta {
+  color: var(--lvl-texto-tenue);
+  font-size: 0.85rem;
+}
+
+.admin-tabla th {
+  color: var(--lvl-acento);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.admin-tabla__acciones {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-tabla__miniatura {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* --------------------------------------------------------------- responsivo */
+@media (max-width: 900px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .admin-sidebar__marca {
+    margin-bottom: 0;
+  }
+
+  .admin-menu {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .admin-menu__enlace {
+    margin-bottom: 0;
+  }
+
+  .admin-sidebar__pie {
+    margin-top: 0;
+    margin-left: auto;
+    border-top: none;
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .item-carrito {
+    gap: 0.5rem;
+  }
+
+  .toast-nivelup {
+    left: 1rem;
+    right: 1rem;
+  }
+}

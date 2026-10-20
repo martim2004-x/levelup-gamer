@@ -1,0 +1,33 @@
+{
+  "name": "levelup-gamer",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Level-Up Gamer - tienda online migrada a React + Vite ",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "karma start karma.conf.js",
+    "test:watch": "karma start karma.conf.js --no-single-run --auto-watch"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@vitejs/plugin-react": "^5.2.0",
+    "esbuild": "^0.28.2",
+    "jsdom": "^30.1.2",
+    "karma": "^6.4.4",
+    "karma-esbuild": "^2.3.0",
+    "karma-jasmine": "^5.1.0",
+    "karma-jsdom-launcher": "^22.0.0",
+    "vite": "^8.3.4"
+  }
+}

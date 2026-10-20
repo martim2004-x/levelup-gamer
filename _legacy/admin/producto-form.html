@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="titulo-pagina">Nuevo producto | Admin Level-Up Gamer</title>
+  <link rel="icon" href="../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__marca">
+        <img src="../img/general/logo.png" alt="Logo Level-Up Gamer">
+        <span>Admin Panel</span>
+      </div>
+      <nav aria-label="Navegación del administrador">
+        <ul class="admin-menu">
+          <li><a href="index.html">🏠 Dashboard</a></li>
+          <li><a href="productos.html" class="activo">📦 Productos</a></li>
+          <li><a href="usuarios.html">👤 Usuarios</a></li>
+        </ul>
+      </nav>
+      <div class="admin-sidebar__pie">
+        <a href="../index.html">← Volver a la tienda</a>
+      </div>
+    </aside>
+
+    <div class="admin-contenido">
+      <header class="admin-topbar">
+        <h1 id="titulo-formulario">Nuevo producto</h1>
+      </header>
+
+      <main class="admin-main">
+        <form class="formulario" id="form-producto" novalidate style="max-width:600px;">
+          <h2 class="formulario__titulo" id="subtitulo-formulario">Registro de producto</h2>
+
+          <div class="campo">
+            <label for="codigo-producto">Código del producto</label>
+            <input type="text" id="codigo-producto" name="codigo" minlength="3" required>
+            <span class="campo__ayuda">Mínimo 3 caracteres. No se puede editar una vez creado.</span>
+            <span class="campo__mensaje"></span>
+          </div>
+
+          <div class="campo">
+            <label for="nombre-producto">Nombre</label>
+            <input type="text" id="nombre-producto" name="nombre" maxlength="100" required>
+            <span class="campo__mensaje"></span>
+          </div>
+
+          <div class="campo">
+            <label for="descripcion-producto">Descripción (opcional)</label>
+            <textarea id="descripcion-producto" name="descripcion" rows="4" maxlength="500"></textarea>
+            <span class="campo__ayuda"><span id="contador-descripcion">0</span>/500 caracteres</span>
+            <span class="campo__mensaje"></span>
+          </div>
+
+          <div class="campo-doble">
+            <div class="campo">
+              <label for="precio-producto">Precio (CLP)</label>
+              <input type="number" id="precio-producto" name="precio" min="0" step="0.01" required>
+              <span class="campo__ayuda">Mínimo 0 (producto FREE). Acepta decimales.</span>
+              <span class="campo__mensaje"></span>
+            </div>
+            <div class="campo">
+              <label for="categoria-producto">Categoría</label>
+              <select id="categoria-producto" name="categoria" required>
+                <option value="" disabled selected>-- Seleccione --</option>
+                <option>Juegos de Mesa</option>
+                <option>Accesorios</option>
+                <option>Consolas</option>
+                <option>Computadores Gamers</option>
+                <option>Sillas Gamers</option>
+                <option>Mouse</option>
+                <option>Mousepad</option>
+                <option>Poleras Personalizadas</option>
+                <option>Polerones Gamers Personalizados</option>
+                <option>Servicio Técnico</option>
+              </select>
+              <span class="campo__mensaje"></span>
+            </div>
+          </div>
+
+          <div class="campo-doble">
+            <div class="campo">
+              <label for="stock-producto">Stock</label>
+              <input type="number" id="stock-producto" name="stock" min="0" step="1" required>
+              <span class="campo__ayuda">Solo números enteros.</span>
+              <span class="campo__mensaje"></span>
+            </div>
+            <div class="campo">
+              <label for="stock-critico-producto">Stock crítico (opcional)</label>
+              <input type="number" id="stock-critico-producto" name="stockCritico" min="0" step="1">
+              <span class="campo__ayuda">Se alertará cuando el stock sea igual o menor.</span>
+              <span class="campo__mensaje"></span>
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="imagen-producto">Imagen (opcional, URL o nombre de archivo)</label>
+            <input type="text" id="imagen-producto" name="imagen" placeholder="img/productos/nombre.svg">
+            <span class="campo__mensaje"></span>
+          </div>
+
+          <p id="mensaje-general-producto" class="campo__mensaje" role="alert"></p>
+
+          <button type="submit" class="btn btn-primario btn-bloque" id="btn-guardar-producto">Guardar producto</button>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/productos-data.js"></script>
+  <script src="../js/validaciones.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("form-producto");
+      const codigo = document.getElementById("codigo-producto");
+      const nombre = document.getElementById("nombre-producto");
+      const descripcion = document.getElementById("descripcion-producto");
+      const contadorDescripcion = document.getElementById("contador-descripcion");
+      const precio = document.getElementById("precio-producto");
+      const categoria = document.getElementById("categoria-producto");
+      const stock = document.getElementById("stock-producto");
+      const stockCritico = document.getElementById("stock-critico-producto");
+      const mensajeGeneral = document.getElementById("mensaje-general-producto");
+
+      // --- Modo edición: si llega ?codigo=XXX, precargamos los datos ---
+      const parametros = new URLSearchParams(window.location.search);
+      const codigoEdicion = parametros.get("codigo");
+      const productoExistente = codigoEdicion ? buscarProductoPorCodigo(codigoEdicion) : null;
+
+      if (productoExistente) {
+        document.getElementById("titulo-pagina").textContent = "Editar producto | Admin Level-Up Gamer";
+        document.getElementById("titulo-formulario").textContent = "Editar producto";
+        document.getElementById("subtitulo-formulario").textContent = "Editar producto";
+
+        codigo.value = productoExistente.codigo;
+        codigo.readOnly = true; // el código es la clave del producto: no se edita
+        nombre.value = productoExistente.nombre;
+        descripcion.value = productoExistente.descripcion || "";
+        contadorDescripcion.textContent = descripcion.value.length;
+        precio.value = productoExistente.precio;
+        categoria.value = productoExistente.categoria;
+        stock.value = productoExistente.stock;
+        stockCritico.value = productoExistente.stockCritico ?? "";
+        document.getElementById("imagen-producto").value = productoExistente.imagen || "";
+      }
+
+      descripcion.addEventListener("input", () => {
+        contadorDescripcion.textContent = descripcion.value.length;
+      });
+
+      // --- Validaciones en tiempo real ---
+      validarEnTiempoReal(codigo, (v) => validarRequerido(v) || validarLargoMinimo(v, 3));
+      validarEnTiempoReal(nombre, (v) => validarRequerido(v) || validarLargoMaximo(v, 100));
+      validarEnTiempoReal(descripcion, (v) => validarLargoMaximo(v, 500));
+      validarEnTiempoReal(precio, (v) => validarNumero(v, { min: 0 }));
+      validarEnTiempoReal(stock, (v) => validarNumero(v, { min: 0, soloEnteros: true }));
+      validarEnTiempoReal(stockCritico, (v) => (v === "" ? "" : validarNumero(v, { min: 0, soloEnteros: true })));
+
+      form.addEventListener("submit", (evento) => {
+        evento.preventDefault();
+
+        const validaciones = [
+          validarCampo(codigo, (v) => validarRequerido(v) || validarLargoMinimo(v, 3)),
+          validarCampo(nombre, (v) => validarRequerido(v) || validarLargoMaximo(v, 100)),
+          validarCampo(descripcion, (v) => validarLargoMaximo(v, 500)),
+          validarCampo(precio, (v) => validarNumero(v, { min: 0 })),
+          validarCampo(stock, (v) => validarNumero(v, { min: 0, soloEnteros: true })),
+          validarCampo(stockCritico, (v) => (v === "" ? "" : validarNumero(v, { min: 0, soloEnteros: true }))),
+        ];
+
+        if (categoria.value === "") {
+          mostrarError(categoria, "Selecciona una categoría.");
+          validaciones.push(false);
+        } else {
+          mostrarExito(categoria);
+        }
+
+        if (!validaciones.every(Boolean)) {
+          mensajeGeneral.textContent = "Revisa los campos marcados en rojo.";
+          mensajeGeneral.className = "campo__mensaje campo__mensaje--error";
+          return;
+        }
+
+        // De nuevo: sin backend en esta entrega, así que simulamos el guardado.
+        mensajeGeneral.textContent = productoExistente
+          ? "Producto actualizado correctamente (simulado)."
+          : "Producto creado correctamente (simulado).";
+        mensajeGeneral.className = "campo__mensaje campo__mensaje--ok";
+
+        setTimeout(() => (window.location.href = "productos.html"), 1200);
+      });
+    });
+  </script>
+</body>
+</html>

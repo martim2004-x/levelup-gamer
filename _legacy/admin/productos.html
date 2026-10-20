@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos | Admin Level-Up Gamer</title>
+  <link rel="icon" href="../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__marca">
+        <img src="../img/general/logo.png" alt="Logo Level-Up Gamer">
+        <span>Admin Panel</span>
+      </div>
+      <nav aria-label="Navegación del administrador">
+        <ul class="admin-menu">
+          <li><a href="index.html">🏠 Dashboard</a></li>
+          <li><a href="productos.html" class="activo">📦 Productos</a></li>
+          <li><a href="usuarios.html">👤 Usuarios</a></li>
+        </ul>
+      </nav>
+      <div class="admin-sidebar__pie">
+        <a href="../index.html">← Volver a la tienda</a>
+      </div>
+    </aside>
+
+    <div class="admin-contenido">
+      <header class="admin-topbar">
+        <h1>Gestión de productos</h1>
+      </header>
+
+      <main class="admin-main">
+        <section class="admin-panel">
+          <div class="admin-tabla-header">
+            <h2 style="margin-bottom:0;">Listado de productos</h2>
+            <a href="producto-form.html" class="btn btn-primario">+ Nuevo producto</a>
+          </div>
+
+          <table class="admin-tabla">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-productos-body">
+              <!-- Filas generadas vía JS desde PRODUCTOS -->
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/productos-data.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tbody = document.getElementById("tabla-productos-body");
+
+      PRODUCTOS.forEach((producto) => {
+        const fila = document.createElement("tr");
+        const alertaStock =
+          producto.stock <= producto.stockCritico
+            ? `<span class="badge badge-alerta">${producto.stock}</span>`
+            : producto.stock;
+
+        fila.innerHTML = `
+          <td>${producto.codigo}</td>
+          <td><img src="../${producto.imagen}" alt="${producto.nombre}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;"></td>
+          <td>${producto.nombre}</td>
+          <td>${producto.categoria}</td>
+          <td>${formatearCLP(producto.precio)}</td>
+          <td>${alertaStock}</td>
+          <td class="admin-tabla__acciones">
+            <a href="producto-form.html?codigo=${producto.codigo}" class="btn-editar">Editar</a>
+            <button type="button" class="btn-eliminar" data-codigo="${producto.codigo}">Eliminar</button>
+          </td>
+        `;
+        tbody.appendChild(fila);
+      });
+
+      // Nota pedagógica: como esta entrega es SOLO frontend (sin base de
+      // datos), "Eliminar" aquí solo simula la acción visualmente (quita
+      // la fila de la tabla en memoria). La persistencia real llegará
+      // cuando se conecte a backend/BD en la evaluación siguiente.
+      tbody.addEventListener("click", (evento) => {
+        if (evento.target.classList.contains("btn-eliminar")) {
+          const fila = evento.target.closest("tr");
+          const confirmar = confirm("¿Seguro que deseas eliminar este producto?");
+          if (confirmar) fila.remove();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

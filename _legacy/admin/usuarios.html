@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios | Admin Level-Up Gamer</title>
+  <link rel="icon" href="../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__marca">
+        <img src="../img/general/logo.png" alt="Logo Level-Up Gamer">
+        <span>Admin Panel</span>
+      </div>
+      <nav aria-label="Navegación del administrador">
+        <ul class="admin-menu">
+          <li><a href="index.html">🏠 Dashboard</a></li>
+          <li><a href="productos.html">📦 Productos</a></li>
+          <li><a href="usuarios.html" class="activo">👤 Usuarios</a></li>
+        </ul>
+      </nav>
+      <div class="admin-sidebar__pie">
+        <a href="../index.html">← Volver a la tienda</a>
+      </div>
+    </aside>
+
+    <div class="admin-contenido">
+      <header class="admin-topbar">
+        <h1>Gestión de usuarios</h1>
+      </header>
+
+      <main class="admin-main">
+        <section class="admin-panel">
+          <div class="admin-tabla-header">
+            <h2 style="margin-bottom:0;">Listado de usuarios</h2>
+            <a href="usuario-form.html" class="btn btn-primario">+ Nuevo usuario</a>
+          </div>
+
+          <table class="admin-tabla">
+            <thead>
+              <tr>
+                <th>RUN</th>
+                <th>Nombre completo</th>
+                <th>Correo</th>
+                <th>Región / Comuna</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-usuarios-body">
+              <!-- Filas generadas vía JS desde USUARIOS -->
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/usuarios-data.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tbody = document.getElementById("tabla-usuarios-body");
+
+      const claseBadgePorRol = {
+        Administrador: "badge-rol--administrador",
+        Vendedor: "badge-rol--vendedor",
+        Cliente: "badge-rol--cliente",
+      };
+
+      USUARIOS.forEach((usuario) => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${usuario.run}</td>
+          <td>${usuario.nombre} ${usuario.apellidos}</td>
+          <td>${usuario.correo}</td>
+          <td>${usuario.comuna}, ${usuario.region}</td>
+          <td><span class="badge-rol ${claseBadgePorRol[usuario.tipoUsuario]}">${usuario.tipoUsuario}</span></td>
+          <td class="admin-tabla__acciones">
+            <a href="usuario-form.html?run=${usuario.run}" class="btn-editar">Editar</a>
+            <button type="button" class="btn-eliminar" data-run="${usuario.run}">Eliminar</button>
+          </td>
+        `;
+        tbody.appendChild(fila);
+      });
+
+      // Simulación de eliminación (sin backend en esta entrega).
+      tbody.addEventListener("click", (evento) => {
+        if (evento.target.classList.contains("btn-eliminar")) {
+          const fila = evento.target.closest("tr");
+          if (confirm("¿Seguro que deseas eliminar este usuario?")) fila.remove();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
